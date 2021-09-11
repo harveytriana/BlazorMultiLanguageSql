@@ -1,0 +1,31 @@
+﻿@page "/set-lang"
+@inject LangService _ls
+
+<h3>@_ls["set-lang"]</h3>
+<hr />
+<div>
+    @foreach (var i in LangService.Languages) {
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="@i" checked="@(lang==i)" @onclick="()=>ChangeLang(i)">
+            <label class="form-check-label" for="@i"> @_ls[i.ToString().ToLower()]</label>
+        </div>
+        <br>
+    }
+    <hr />
+    <em>@_ls["cur-lang"]: @_ls[lang.ToLower()]</em>
+</div>
+
+@code {
+    string lang;
+
+    protected override void OnInitialized()
+    {
+        lang = LangService.CurrentLanguage;
+    }
+
+    async Task ChangeLang(string selectedLang)
+    {
+        lang = selectedLang;
+        await _ls.LoadLanguageAsync(selectedLang);
+    }
+}

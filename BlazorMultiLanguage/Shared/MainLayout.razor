@@ -1,0 +1,25 @@
+﻿@inherits LayoutComponentBase
+@inject LangService _ls
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <div class="main">
+        <div class="top-row px-4">
+            <a href="http://blazor.net" target="_blank" class="ml-md-auto">@_ls["about"]</a>
+        </div>
+
+        <div class="content px-4">
+            @Body
+        </div>
+    </div>
+</div>
+
+@code {
+    // Subscribe to the event to update the language if the user changes it
+    protected override void OnInitialized() => _ls.OnChange += StateHasChanged;
+
+    public void Dispose() => _ls.OnChange -= StateHasChanged;
+}

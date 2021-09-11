@@ -1,0 +1,17 @@
+﻿@page "/counter"
+@inject LangService _ls
+
+<h1>@_ls["counter"]</h1>
+
+<p>@_ls["current-count"]: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">@_ls["click-me"]</button>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
