@@ -18,5 +18,28 @@ namespace BlazorMultilanguage.Server.Models
         // ...
 
         public override string ToString() => $"{Id}: {EN}";
+
+        public string Get(string culture) {
+            return culture switch {
+                "EN" => EN,
+                "ES" => ES,
+                "DE" => PT,
+                "RU" => RU,
+                "NO" => NO,
+                "IT" => IT,
+                _ => EN,
+            };
+        }
+        public string Set(string culture, string value) {
+            return culture switch {
+                "EN" => EN = value,
+                "ES" => ES = value,
+                "DE" => PT = value,
+                "RU" => RU = value,
+                "NO" => NO = value,
+                "IT" => IT = value,
+                _ => EN = value,
+            };
+        }
     }
 }

@@ -9,26 +9,28 @@ using System.Threading.Tasks;
 
 namespace BlazorMultiLanguage
 {
-    public class Program
+public class Program
+{
+    const string API_ROOT = "https://localhost:5001";
+
+    public static async Task Main(string[] args)
     {
-        public static async Task Main(string[] args)
-        {
-            var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("#app");
+        var builder = WebAssemblyHostBuilder.CreateDefault(args);
+        builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            // The server must allow the client url in its CORS configuration
-            builder.Services.AddHttpClient("AspNetApi", _ => _.BaseAddress = new Uri("https://localhost:5001"));
+        // The server must allow the client url in its CORS configuration
+        builder.Services.AddHttpClient("AspNetApi", _ => _.BaseAddress = new Uri(API_ROOT));
 
-            builder.Services.AddSingleton<LangService>();
+        builder.Services.AddSingleton<LangService>();
 
-            // setup application language
-            var host = builder.Build();
-            var langService = host.Services.GetService<LangService>();
-            await langService.LoadLanguageAsync();
+        // setup application language
+        var host = builder.Build();
+        var langService = host.Services.GetService<LangService>();
+        await langService.LoadLanguageAsync();
 
-            await builder.Build().RunAsync();
-        }
+        await builder.Build().RunAsync();
     }
+}
 }

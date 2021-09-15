@@ -22,7 +22,7 @@ namespace BlazorMultilanguage.Server.Controllers
 
 
         public TextResourcesController(
-            TextResourcesContext context, 
+            TextResourcesContext context,
             ILogger<TextResourcesController> logger) {
             _context = context;
             _logger = logger;
@@ -107,7 +107,7 @@ namespace BlazorMultilanguage.Server.Controllers
         }
 
         [HttpGet("Import")]
-        public async Task<string> GetLatest() {
+        public async Task<string> Import() {
             string result;
             try {
 
@@ -117,6 +117,7 @@ namespace BlazorMultilanguage.Server.Controllers
                 //}
 
                 var file = @"C:\_study\Blazor\Intents\BlazorMultiLanguageSql\BlazorMultiLanguage\Resources\Languages.json";
+                var changes = false;
 
                 if (IO.File.Exists(file)) {
                     var js = IO.File.ReadAllText(file);
@@ -127,9 +128,14 @@ namespace BlazorMultilanguage.Server.Controllers
                         }
                         Trace.WriteLine(i.ToString());
                         _context.TextResources.Add(i);
-                        await _context.SaveChangesAsync();
+                        changes = true;
                     }
-                    result = "Update is done";
+                    if (changes) {
+                        await _context.SaveChangesAsync();
+                        result = "Update is done";
+                    } else {
+                        result = "No changes";
+                    }
                 } else {
                     result = "missing file";
                 }
@@ -137,6 +143,30 @@ namespace BlazorMultilanguage.Server.Controllers
                 result = "exception";
             }
             return result;
+        }
+
+        [HttpGet("GetLanguage/culture")]
+        public async Task<Dictionary<string, string>> GetLanguage(string culture) {
+            
+            _logger.LogInformation($"{DateTime.Now.ToShortTimeString()} Request GetLanguage/{culture}");
+
+            var ls = await _context.TextResources.Where(x => string.IsNullOrEmpty(x.Get(culture)) == false).ToListAsync();
+            return ls.ToDictionary(x => x.Id, x => x.Get(culture));
+        }
+
+        [HttpGet("GetLanguages")]
+        public async Task<string[]> GetLanguages() {
+            var textResource = await _context.TextResources.FirstAsync();
+            var ls = new List<string>();
+            foreach (var p in typeof(TextResource).GetProperties()) {
+                if (p.Name != "Id") {
+                    if (string.IsNullOrEmpty(textResource.Get(p.Name))) {
+                        continue;
+                    }
+                    ls.Add(p.Name);
+                }
+            }
+            return ls.ToArray();
         }
     }
 }
