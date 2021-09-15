@@ -14,7 +14,7 @@ namespace BlazorMultiLanguage
 {
     public class LangService
     {
-        public static string CurrentLanguage { get; private set; }
+        public static string CurrentCulture { get; private set; }
         public static string[] Cultures { get; private set; }
 
         // language data
@@ -25,7 +25,7 @@ namespace BlazorMultiLanguage
         void NotifyStateChanged() => OnChange?.Invoke();
 
         // preserve user language
-        const string LSKEY = "AppLanguage";
+        const string STORAGESKEY = "CurrentCulture";
 
         // to manage localStorage
         readonly IJSRuntime _jsRuntime;
@@ -39,13 +39,13 @@ namespace BlazorMultiLanguage
         public async Task LoadLanguageAsync(string lang = null) {
             if (lang == null) {
                 // get storage user language
-                var l = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", LSKEY);
+                var l = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", STORAGESKEY);
                 lang = l ?? "EN"; // set default
             }
-            if (CurrentLanguage == lang) {
+            if (CurrentCulture == lang) {
                 return;
             }
-            CurrentLanguage = lang;
+            CurrentCulture = lang;
             try {
                 var url = $"api/TextResources/GetCulture/{lang}";
                 var ls = await _httpClient.GetFromJsonAsync<Dictionary<string, string>>(url);
@@ -57,12 +57,12 @@ namespace BlazorMultiLanguage
                 NotifyStateChanged();
 
                 // save local storage
-                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", LSKEY, lang);
+                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", STORAGESKEY, lang);
 
             } catch {// empty
                 _textResources = new Dictionary<string, string>().ToImmutableDictionary();
             }
-            Console.WriteLine("Start CurrentLanguage: {0}", CurrentLanguage);
+            Console.WriteLine("Start CurrentLanguage: {0}", CurrentCulture);
 
         }
 

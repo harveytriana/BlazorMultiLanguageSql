@@ -28,7 +28,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        culture = LangService.CurrentLanguage;
+        culture = LangService.CurrentCulture;
         cultures = await _ls.GetCultures();
     }
 

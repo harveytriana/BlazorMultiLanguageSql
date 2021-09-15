@@ -31,6 +31,10 @@ namespace BlazorMultilanguage.Server.Controllers
             return ls;
         }
 
+        /// <summary>
+        /// Using reflection, reads the signature and filters for those that have content
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetCultures")]
         public async Task<string[]> GetCultures() {
             var f = await _context
