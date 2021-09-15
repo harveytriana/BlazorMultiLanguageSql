@@ -4,12 +4,16 @@
 <h3>@_ls["set-lang"]</h3>
 <hr />
 <div>
-    @foreach (var i in LangService.Languages) {
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="@i" checked="@(lang==i)" @onclick="()=>ChangeLang(i)">
-            <label class="form-check-label" for="@i"> @_ls[i.ToString().ToLower()]</label>
-        </div>
-        <br>
+    @if (languages != null)
+    {
+        @foreach (var i in languages)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="@i" checked="@(lang==i)" @onclick="()=>ChangeLang(i)">
+                <label class="form-check-label" for="@i"> @_ls[i.ToString().ToLower()]</label>
+            </div>
+            <br>
+        }
     }
     <hr />
     <em>@_ls["cur-lang"]: @_ls[lang.ToLower()]</em>
@@ -17,9 +21,11 @@
 
 @code {
     string lang;
+    string[] languages;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        languages = await _ls.GetCultures();
         lang = LangService.CurrentLanguage;
     }
 

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*
+BlazorMultiLanguage :: TextResource
+blazorspread.net
+*/
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BlazorMultilanguage.Server.Models
 {
@@ -19,6 +19,7 @@ namespace BlazorMultilanguage.Server.Models
 
         public override string ToString() => $"{Id}: {EN}";
 
+        // to enabled in linq get by name 
         public string Get(string culture) {
             return culture switch {
                 "EN" => EN,
@@ -30,6 +31,8 @@ namespace BlazorMultilanguage.Server.Models
                 _ => EN,
             };
         }
+
+        // to update by neme (manage)
         public string Set(string culture, string value) {
             return culture switch {
                 "EN" => EN = value,
