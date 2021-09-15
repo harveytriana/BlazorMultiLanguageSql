@@ -33,26 +33,24 @@ namespace BlazorMultilanguage.Server.Controllers
 
         [HttpGet("GetCultures")]
         public async Task<string[]> GetCultures() {
-            //var f = await _context
-            //    .TextResources
-            //    .OrderBy(X=> X.Id)
-            //    .FirstOrDefaultAsync();
-            //try {
-            //    var ls = new List<string>();
-            //    foreach (var p in typeof(TextResource).GetProperties()) {
-            //        if (p.Name != "Id") {
-            //            if (string.IsNullOrEmpty(f.Get(p.Name))) {
-            //                continue;
-            //            }
-            //            ls.Add(p.Name);
-            //        }
-            //    }
-            //    return ls.ToArray();
-            //} catch { 
-            //    return Array.Empty<string>(); 
-            //}
-            await Task.Delay(1000);
-            return new string[] { "ES", "EN" };
+            var f = await _context
+                .TextResources
+                .OrderBy(X => X.Id)
+                .FirstOrDefaultAsync();
+            try {
+                var ls = new List<string>();
+                foreach (var p in typeof(TextResource).GetProperties()) {
+                    if (p.Name != "Id") {
+                        if (string.IsNullOrEmpty(f.Get(p.Name))) {
+                            continue;
+                        }
+                        ls.Add(p.Name);
+                    }
+                }
+                return ls.ToArray();
+            } catch {
+                return Array.Empty<string>();
+            }
         }
     }
 }
