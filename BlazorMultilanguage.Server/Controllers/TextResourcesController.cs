@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BlazorMultilanguage.Server.Models;
 using BlazorMultilanguage.Server.Services;
+using System;
 
 namespace BlazorMultilanguage.Server.Controllers
 {
@@ -32,17 +33,26 @@ namespace BlazorMultilanguage.Server.Controllers
 
         [HttpGet("GetCultures")]
         public async Task<string[]> GetCultures() {
-            var textResource = await _context.TextResources.FirstAsync();
-            var ls = new List<string>();
-            foreach (var p in typeof(TextResource).GetProperties()) {
-                if (p.Name != "Id") {
-                    if (string.IsNullOrEmpty(textResource.Get(p.Name))) {
-                        continue;
-                    }
-                    ls.Add(p.Name);
-                }
-            }
-            return ls.ToArray();
+            //var f = await _context
+            //    .TextResources
+            //    .OrderBy(X=> X.Id)
+            //    .FirstOrDefaultAsync();
+            //try {
+            //    var ls = new List<string>();
+            //    foreach (var p in typeof(TextResource).GetProperties()) {
+            //        if (p.Name != "Id") {
+            //            if (string.IsNullOrEmpty(f.Get(p.Name))) {
+            //                continue;
+            //            }
+            //            ls.Add(p.Name);
+            //        }
+            //    }
+            //    return ls.ToArray();
+            //} catch { 
+            //    return Array.Empty<string>(); 
+            //}
+            await Task.Delay(1000);
+            return new string[] { "ES", "EN" };
         }
     }
 }

@@ -24,7 +24,7 @@ namespace BlazorMultilanguage.Server.Models
             return culture switch {
                 "EN" => EN,
                 "ES" => ES,
-                "DE" => PT,
+                "PT" => PT,
                 "RU" => RU,
                 "NO" => NO,
                 "IT" => IT,
@@ -37,7 +37,7 @@ namespace BlazorMultilanguage.Server.Models
             return culture switch {
                 "EN" => EN = value,
                 "ES" => ES = value,
-                "DE" => PT = value,
+                "PT" => PT = value,
                 "RU" => RU = value,
                 "NO" => NO = value,
                 "IT" => IT = value,

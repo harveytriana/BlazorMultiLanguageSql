@@ -15,6 +15,7 @@ namespace BlazorMultiLanguage
     public class LangService
     {
         public static string CurrentLanguage { get; private set; }
+        public static string[] Cultures { get; private set; }
 
         // language data
         static ImmutableDictionary<string, string> _textResources;
@@ -44,10 +45,10 @@ namespace BlazorMultiLanguage
             if (CurrentLanguage == lang) {
                 return;
             }
+            CurrentLanguage = lang;
             try {
                 var url = $"api/TextResources/GetCulture/{lang}";
                 var ls = await _httpClient.GetFromJsonAsync<Dictionary<string, string>>(url);
-                CurrentLanguage = lang;
 
                 // let statics
                 _textResources = ls.ToImmutableDictionary();
@@ -61,10 +62,15 @@ namespace BlazorMultiLanguage
             } catch {// empty
                 _textResources = new Dictionary<string, string>().ToImmutableDictionary();
             }
+            Console.WriteLine("Start CurrentLanguage: {0}", CurrentLanguage);
+
         }
 
         public async Task<string[]> GetCultures() {
-            return await _httpClient.GetFromJsonAsync<string[]>("api/TextResources/GetCultures}");
+            if (Cultures is null) {
+                Cultures= await _httpClient.GetFromJsonAsync<string[]>("api/TextResources/GetCultures");
+            }
+            return Cultures;
         }
 
         /// <summary>
