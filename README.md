@@ -8,6 +8,8 @@ Explained in the post:
 - Spanish: https://www.blazorspread.net/blogview/78
 - German: https://www.blazorspread.net/blogview/77 
 
+> **Run the two projects simultaneously. The server project goes to https, localhost, port 5001.**
+
 *If this code is useful to you, I appreciate giving a star to this repository.*
 
 `MIT license. Author: Harvey Triana. Contact: admin@blazorspread.net`
