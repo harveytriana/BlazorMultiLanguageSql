@@ -27,7 +27,8 @@ namespace BlazorMultilanguage.Server.Controllers
         public async Task<Dictionary<string, string>> GetLanguage(string culture) {
             var ls = await _context.TextResources
                 .Where(x => x.Id != "")
-                .ToDictionaryAsync(x => x.Id, x => x.Get(culture));
+                .Select(x => new { x.Id, Text = x.Get(culture) })
+                .ToDictionaryAsync(x => x.Id, x => x.Text);
             return ls;
         }
 
