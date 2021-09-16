@@ -32,7 +32,7 @@ namespace BlazorMultilanguage.Server.Models
             };
         }
 
-        // to update by neme (manage)
+        // to update by name (manage tools)
         public string Set(string culture, string value) {
             return culture switch {
                 "EN" => EN = value,
