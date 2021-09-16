@@ -25,7 +25,7 @@ namespace BlazorMultiLanguage
         void NotifyStateChanged() => OnChange?.Invoke();
 
         // preserve user language
-        const string STORAGESKEY = "CurrentCulture";
+        const string STORAGEKEY = "CurrentCulture";
 
         // to manage localStorage
         readonly IJSRuntime _jsRuntime;
@@ -39,7 +39,7 @@ namespace BlazorMultiLanguage
         public async Task LoadLanguageAsync(string lang = null) {
             if (lang == null) {
                 // get storage user language
-                var l = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", STORAGESKEY);
+                var l = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", STORAGEKEY);
                 lang = l ?? "EN"; // set default
             }
             if (CurrentCulture == lang) {
@@ -57,7 +57,7 @@ namespace BlazorMultiLanguage
                 NotifyStateChanged();
 
                 // save local storage
-                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", STORAGESKEY, lang);
+                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", STORAGEKEY, lang);
 
             } catch {// empty
                 _textResources = new Dictionary<string, string>().ToImmutableDictionary();
