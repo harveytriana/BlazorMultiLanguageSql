@@ -2,25 +2,21 @@
 @inject LangService _ls
 
 <h3>@_ls["set-lang"]</h3>
-<hr />
-<div>
-    @if (cultures is null) {
-        <p>Loading...</p>
-    }
-    else
-    {
-        @foreach (var i in cultures)
-        {
-            <div class="form-check">
+@if (cultures is null) {
+    <p>Loading...</p>
+}
+else {
+    <div class="card p-4">
+        @foreach (var i in LangService.Cultures) {
+            <div class="form-check" style="margin-bottom:6px;">
                 <input class="form-check-input" type="radio" name="@i" checked="@(culture==i)" @onclick="()=>ChangeLang(i)">
-                <label class="form-check-label" for="@i" style="margin-left:8px;">@_ls[i.ToString().ToLower()]</label>
+                <label class="form-check-label" for="@i" style="margin-left:6px;"> @_ls[i.ToString().ToLower()]</label>
             </div>
-            <br>
         }
-    }
-    <hr />
-    <em>@_ls["cur-lang"]: @_ls[culture.ToLower()]</em>
-</div>
+        <hr />
+        <em>@_ls["cur-lang"]: @_ls[culture.ToLower()]</em>
+    </div>
+}
 
 @code {
     string culture;
